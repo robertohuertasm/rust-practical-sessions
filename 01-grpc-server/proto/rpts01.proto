@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rpts01;
+
+service Rpts {
+  rpc SayHi (HiRequest) returns (HiResponse);
+}
+
+message HiRequest {
+  string hello = 1;
+}
+
+message HiResponse {
+  string message = 1;
+}
