@@ -2,7 +2,7 @@ use proto::{
     rpts_server::{Rpts, RptsServer},
     HiRequest, HiResponse,
 };
-use tonic::{transport::Server, Request, Response, Status};
+use tonic::{metadata::MetadataValue, transport::Server, Request, Response, Status};
 
 pub mod proto {
     tonic::include_proto!("rpts01");
@@ -27,12 +27,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rpts01_service = Rpts01Service {};
 
     Server::builder()
-        .add_service(RptsServer::new(rpts01_service))
+        .add_service(RptsServer::with_interceptor(rpts01_service, interceptor))
         .serve(addr)
         .await?;
 
     Ok(())
 
-    // use the grpcurl call below to test it
+    // use the grpcurl calls below to test it
+    // Unauthenticated
     // grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"hello": "Rob"}' localhost:50051 rpts01.Rpts/SayHi
+
+    // Authenticated
+    // grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"hello": "Rob"}' -H 'authorization: Bearer myjwttoken' localhost:50051 rpts01.Rpts/SayHi
+}
+
+fn interceptor(req: Request<()>) -> Result<Request<()>, Status> {
+    let token = MetadataValue::from_str("Bearer myjwttoken").unwrap();
+    println!("Validating the request");
+    match req.metadata().get("authorization") {
+        Some(t) if t == token => Ok(req),
+        _ => Err(Status::unauthenticated("The token is invalid")),
+    }
 }

@@ -4,7 +4,6 @@
 
 ## Pending
 
-- Interceptor
 - SQLx
 - Code reorganization
 
