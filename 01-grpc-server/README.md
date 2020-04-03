@@ -1,6 +1,6 @@
 # 1 - Build a gRPC server
 
-![rust_practical_sessions_01](rust_practical_sessions_1.png)
+![rust_practical_sessions_01](assets/rust_practical_sessions_1.png)
 
 ## Pending
 

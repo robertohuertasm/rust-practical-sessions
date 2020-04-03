@@ -1,6 +1,6 @@
 use proto::{
     rpts_server::{Rpts, RptsServer},
-    HiRequest, HiResponse,
+    HiRequest, HiResponse, User, UserRequest,
 };
 use tonic::{metadata::MetadataValue, transport::Server, Request, Response, Status};
 
@@ -16,6 +16,11 @@ impl Rpts for Rpts01Service {
         let response = HiResponse {
             message: format!("Hello {}! How are you?", request.into_inner().hello),
         };
+        Ok(Response::new(response))
+    }
+
+    async fn get_user(&self, _: Request<UserRequest>) -> Result<Response<User>, Status> {
+        let response = User::default();
         Ok(Response::new(response))
     }
 }
@@ -39,6 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Authenticated
     // grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"hello": "Rob"}' -H 'authorization: Bearer myjwttoken' localhost:50051 rpts01.Rpts/SayHi
+    // grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"name": "Roberto"}' -H 'authorization: Bearer myjwttoken' localhost:50051 rpts01.Rpts/GetUser
 }
 
 fn interceptor(req: Request<()>) -> Result<Request<()>, Status> {
