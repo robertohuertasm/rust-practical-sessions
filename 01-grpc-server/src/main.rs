@@ -1,35 +1,22 @@
-use proto::{
-    rpts_server::{Rpts, RptsServer},
-    HiRequest, HiResponse, User, UserRequest,
-};
-use tonic::{metadata::MetadataValue, transport::Server, Request, Response, Status};
+mod data;
+mod proto;
+mod service;
 
-pub mod proto {
-    tonic::include_proto!("rpts01");
-}
-
-pub struct Rpts01Service {}
-
-#[tonic::async_trait]
-impl Rpts for Rpts01Service {
-    async fn say_hi(&self, request: Request<HiRequest>) -> Result<Response<HiResponse>, Status> {
-        let response = HiResponse {
-            message: format!("Hello {}! How are you?", request.into_inner().hello),
-        };
-        Ok(Response::new(response))
-    }
-
-    async fn get_user(&self, _: Request<UserRequest>) -> Result<Response<User>, Status> {
-        let response = User::default();
-        Ok(Response::new(response))
-    }
-}
+use proto::rpts_server::RptsServer;
+use service::Rpts01Service;
+use std::env;
+use tonic::{metadata::MetadataValue, transport::Server, Request, Status};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    dotenv::dotenv().ok();
+
     let address = "0.0.0.0:50051";
     let addr = address.parse()?;
-    let rpts01_service = Rpts01Service {};
+    let conn_str = &env::var("DATABASE_URL")?;
+
+    let repository = data::PostgresRepository::build(conn_str).await?;
+    let rpts01_service = Rpts01Service { repository };
 
     Server::builder()
         .add_service(RptsServer::with_interceptor(rpts01_service, interceptor))

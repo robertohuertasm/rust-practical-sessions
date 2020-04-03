@@ -854,6 +854,8 @@ dependencies = [
 name = "rpts01"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "dotenv",
  "prost",
  "prost-types",
  "serde",

@@ -2,11 +2,6 @@
 
 ![rust_practical_sessions_01](assets/rust_practical_sessions_1.png)
 
-## Pending
-
-- SQLx
-- Code reorganization
-
 ## Requirements
 
 - Be sure to have the latest version of [Rust installed](https://www.rust-lang.org/tools/install).
