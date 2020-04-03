@@ -24,6 +24,7 @@ impl PostgresRepository {
 }
 
 #[tonic::async_trait]
+#[allow(clippy::empty_line_after_outer_attr)]
 impl Repository for PostgresRepository {
     async fn get_user(&self, name: &str) -> Result<User> {
         let pool = &self.pool;
