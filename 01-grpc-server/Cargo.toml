@@ -11,7 +11,7 @@ tonic = "0.2.0"
 prost = "0.6.1"
 tokio = { version = "0.2.14", features = ["macros"]}
 
-sqlx = { version = "0.3", default-features = false, features = ["runtime-tokio", "macros", "postgres", "uuid", "json"] }
+sqlx = { version = "0.3", default-features = false, features = ["runtime-tokio", "macros", "postgres", "uuid", "json", "chrono"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 uuid = "0.8.1"
@@ -19,6 +19,7 @@ prost-types = "0.6.1"
 
 anyhow = "1.0"
 dotenv = "0.15.0"
+# chrono = "0.4"
 
 
 [build-dependencies]
