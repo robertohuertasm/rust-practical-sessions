@@ -7,6 +7,11 @@ use sqlx::{
     PgPool,
 };
 
+#[tonic::async_trait]
+pub trait Repository {
+    async fn get_user(&self, name: &str) -> Result<User>;
+}
+
 pub struct PostgresRepository {
     pub pool: PgPool,
 }
@@ -16,14 +21,17 @@ impl PostgresRepository {
         let pool = PgPool::new(conn_str).await?;
         Ok(Self { pool })
     }
+}
 
-    pub async fn get_user(&self, name: &str) -> Result<User> {
+#[tonic::async_trait]
+impl Repository for PostgresRepository {
+    async fn get_user(&self, name: &str) -> Result<User> {
         let pool = &self.pool;
 
         let raw_user = sqlx::query_as!(
-            RawUser,
-            "SELECT id, name, birth_date, created_at, updated_at, custom_data FROM users where name = $1",
-            name
+          RawUser, 
+          "SELECT id, name, birth_date, created_at, updated_at, custom_data FROM users where name = $1", 
+          name
         )
         .fetch_one(pool)
         .await?;

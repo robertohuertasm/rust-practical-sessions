@@ -14,7 +14,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let address = "0.0.0.0:50051";
     let addr = address.parse()?;
     let conn_str = &env::var("DATABASE_URL")?;
-
     let repository = data::PostgresRepository::build(conn_str).await?;
     let rpts01_service = Rpts01Service { repository };
 
