@@ -21,10 +21,12 @@ impl<T: Repository + Send + Sync + 'static> Rpts for Rpts01Service<T> {
     async fn get_user(&self, request: Request<UserRequest>) -> Result<Response<User>, Status> {
         let name = request.into_inner().name;
 
-        let user = self.repository.get_user(&name).await.map_err(|e| {
-            Status::not_found(format!("No user with name {} exists. Error: {:?}", name, e))
-        })?;
-
-        Ok(Response::new(user))
+        self.repository
+            .get_user(&name)
+            .await
+            .map(Response::new)
+            .map_err(|e| {
+                Status::not_found(format!("No user with name {} exists. Error: {:?}", name, e))
+            })
     }
 }

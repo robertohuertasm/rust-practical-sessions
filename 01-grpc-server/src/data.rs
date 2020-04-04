@@ -1,11 +1,12 @@
 use crate::proto::User;
 use anyhow::Result;
-use prost_types::Timestamp;
+use prost_types::{Timestamp};
 
 use sqlx::{
     types::chrono::{DateTime, NaiveDate, Utc},
     PgPool,
 };
+use std::collections::HashMap;
 
 #[tonic::async_trait]
 pub trait Repository {
@@ -27,19 +28,13 @@ impl PostgresRepository {
 #[allow(clippy::empty_line_after_outer_attr)]
 impl Repository for PostgresRepository {
     async fn get_user(&self, name: &str) -> Result<User> {
-        let pool = &self.pool;
-
-        let raw_user = sqlx::query_as!(
+        sqlx::query_as!(
           RawUser, 
           "SELECT id, name, birth_date, created_at, updated_at, custom_data FROM users where name = $1", 
           name
         )
-        .fetch_one(pool)
-        .await?;
-
-        println!("{:?}", raw_user);
-
-        Ok(raw_user.into())
+        .fetch_one(&self.pool)
+        .await.map(RawUser::into).map_err(sqlx::Error::into)
     }
 }
 
@@ -61,8 +56,17 @@ impl From<RawUser> for User {
             birth_date: naive_to_timestamp(raw_user.birth_date),
             created_at: to_timestamp(raw_user.created_at),
             updated_at: to_timestamp(raw_user.updated_at),
+            custom_data: to_map(&raw_user.custom_data),
         }
     }
+}
+
+fn to_map(json: &serde_json::Value) -> HashMap<String, i64> {
+    let mut map = HashMap::new();
+    for (key, val) in json.as_object().unwrap() {
+            map.insert(key.to_owned(), val.as_i64().unwrap());
+    }
+    map
 }
 
 fn to_timestamp(datetime: Option<DateTime<Utc>>) -> Option<Timestamp> {

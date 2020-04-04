@@ -37,6 +37,22 @@
 - Async/Await
 - How to use the From trait
 
+## grpcurl scripts
+
+```sh
+# Use the grpcurl calls below to test it:
+
+# Unauthenticated
+# SayHi
+grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"hello": "Rob"}' localhost:50051 rpts01.Rpts/SayHi
+
+# Authenticated
+# SayHi
+grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"hello": "Rob"}' -H 'authorization: Bearer myjwttoken' localhost:50051 rpts01.Rpts/SayHi
+# GetUser
+grpcurl -plaintext -import-path ./proto -proto rpts01.proto -d '{"name": "Roberto"}' -H 'authorization: Bearer myjwttoken' localhost:50051 rpts01.Rpts/GetUser
+```
+
 ### Attributions
 
 Lab image by [freepik.com](https://www.freepik.com/free-photos-vectors/background)

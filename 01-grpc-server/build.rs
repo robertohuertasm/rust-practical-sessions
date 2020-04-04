@@ -6,6 +6,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // for instance, by only generating the server and compiling the proto to a specific folder
     // tonic_build::configure()
     //     .build_client(false)
+    //     .type_attribute("HiRequest", "#[derive(Serializable, Deserializable)]")
     //     .out_dir("./generated")
     //     .compile(&["proto/rpts01.proto"], &["proto"])?;
 
