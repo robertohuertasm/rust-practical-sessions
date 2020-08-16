@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "35342c12-5dd4-4254-befd-e09576dffa01",
+		"name": "RPTS02 - REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJyOWliSTlVakR0SjBvdStvSFRhTFRXY2ptVVJuUEF1azMyUHBkaTN4eU40PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIyMzAyYTgxNy1iMGI5LTQ2Y2UtODNkYy05MzdkNjY5MWM1NjYiLCJhdWQiOiI1OWFvY2FwYTFqOWpiZmFjY2tkbjNianE0aCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJldmVudF9pZCI6ImUxZTI4YmQ4LTUyOTMtNGVmNy1iMTNkLTk5YzcxMzNlZDcxNCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNTk2ODk5NDI0LCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9yZ0F2VzdRTWwiLCJjb2duaXRvOnVzZXJuYW1lIjoiMjMwMmE4MTctYjBiOS00NmNlLTgzZGMtOTM3ZDY2OTFjNTY2IiwiZXhwIjoxNTk2OTAzMDI0LCJpYXQiOjE1OTY4OTk0MjQsImVtYWlsIjoicm9iZXJ0by5odWVydGFzQG91dGxvb2suY29tIiwiY3VzdG9tOmNvbXBhbnkiOiJCMkMgQmV0YSBUZXN0ZXJzIn0.j6KVcaynlidHic8QZ6_YW7R2gPuGtm_jXiIgno0fLlV4M5iRxEXvyPR9dIZq_7rKWutB9RFCXW6ZojK1EKj6sLDziV5uUTxX7uKukPoc9U3Y_WccbJkAiUxYvWoOHz5avEz8ttcuBImiA04QJNARvy0ZNIun4c-P-oaG6nn8Z4LCxUPpyeMawXp6SrWeU3O6zBdFMytNSdw64xvl9ifcMOQuxuuZJT3MCPjhtUTJ5KFs1Vq10ViBO9ahcTXUpkpHD_YEaAFxRCbG2iRA2xbqXOjPFlrXQqSrzW9H75-NqGEs_R738C4VOAFQ81ZKoTdLK3QlquN4w1J7OdjbYFyhJQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-encoding",
+						"type": "text",
+						"value": "application/gzip",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/v1/users/d01dc302-7536-11ea-a9ec-0242ac120004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"users",
+						"d01dc302-7536-11ea-a9ec-0242ac120004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/v1/users/d01dc302-7536-11ea-a9ec-0242ac120004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"users",
+						"d01dc302-7536-11ea-a9ec-0242ac120004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "conten",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Roberto\",\n    \"birth_date\": \"1977-03-10\",\n    \"custom_data\": {\n        \"random\": 4567\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "conten",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"random\": 711090\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/users/d01dc302-7536-11ea-a9ec-0242ac120004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"users",
+						"d01dc302-7536-11ea-a9ec-0242ac120004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metrics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

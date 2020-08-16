@@ -1,0 +1,35 @@
+[package]
+name = "rpts02"
+version = "0.1.0"
+authors = ["Roberto Huertas <roberto.huertas@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# server
+actix-rt = "1.1.1"
+actix-web = "2.0.0"
+actix-cors = "0.2.0"
+actix-web-middleware-cognito = "0.2.0"
+futures = "0.3.5"
+# observability: logs, distributed tracing and metrics
+actix-web-prom = "0.2.0"
+tracing = "0.1.19"
+tracing-futures = { version = "0.2.4", features = ["tokio"] }
+tracing-subscriber = "0.2.11"
+# serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# utils
+dotenv = "0.15.0"
+async-trait = "0.1.37"
+chrono = { version = "0.4.15", features = ["serde"] }
+uuid = { version = "0.8.1", features = [ "v4", "serde"] }
+# database
+sqlx = { version = "0.4.0-beta.1", default-features = false, features = [ "runtime-tokio", "macros", "postgres", "uuid", "chrono", "json" ] }
+# errors
+thiserror = "1.0.20"
+
+[dev-dependencies]
+mockall = "0.7.2"

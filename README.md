@@ -9,3 +9,4 @@ Hopefully this effort will enable some of the devs at [Alpha](https://alpha.comp
 ## Sessions
 
 - [01 - Build a gRPC server](/01-grpc-server/)
+- [02 - Build a REST API](/02-rest-api/)
