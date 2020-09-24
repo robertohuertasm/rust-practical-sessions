@@ -82,7 +82,7 @@ pub mod users {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use crate::v1::service::{Result as ServiceResut, Service};
+        use crate::v1::service::{Result as ServiceResult, Service};
         use actix_web::{dev::Body, test};
         use async_trait::async_trait;
         use mockall::predicate::*;
@@ -90,21 +90,21 @@ pub mod users {
 
         mock! {
             pub Svc {
-                fn sync_get_user(&self, user_id: &Uuid, caller_id: Option<String>) -> ServiceResut<User> {}
+                fn sync_get_user(&self, user_id: &Uuid, caller_id: Option<String>) -> ServiceResult<User> {}
                 fn sync_update_user(
                     &self, user_id: &Uuid,
                     caller_id: Option<String>,
                     custom_data: CustomData,
-                ) -> ServiceResut<User> {}
+                ) -> ServiceResult<User> {}
                 fn sync_create_user(
                     &self,
                     user: User,
-                ) -> ServiceResut<User> {}
+                ) -> ServiceResult<User> {}
                 fn sync_delete_user(
                     &self,
                     user_id: &Uuid,
                     caller_id: Option<String>,
-                ) -> ServiceResut<User> {}
+                ) -> ServiceResult<User> {}
             }
         }
 
@@ -120,7 +120,7 @@ pub mod users {
                 &self,
                 user_id: &Uuid,
                 caller_id: Option<String>,
-            ) -> ServiceResut<User> {
+            ) -> ServiceResult<User> {
                 self.sync_get_user(&user_id, caller_id)
             }
             async fn update_user(
@@ -128,17 +128,17 @@ pub mod users {
                 user_id: &Uuid,
                 caller_id: Option<String>,
                 custom_data: CustomData,
-            ) -> ServiceResut<User> {
+            ) -> ServiceResult<User> {
                 self.sync_update_user(&user_id, caller_id, custom_data)
             }
-            async fn create_user(&self, user: User) -> ServiceResut<User> {
+            async fn create_user(&self, user: User) -> ServiceResult<User> {
                 self.sync_create_user(user)
             }
             async fn delete_user(
                 &self,
                 user_id: &Uuid,
                 caller_id: Option<String>,
-            ) -> ServiceResut<User> {
+            ) -> ServiceResult<User> {
                 self.sync_delete_user(&user_id, caller_id)
             }
         }
