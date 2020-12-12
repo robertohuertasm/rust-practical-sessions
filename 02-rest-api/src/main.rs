@@ -55,9 +55,7 @@ async fn main() -> std::io::Result<()> {
         // cognito middleware
         let cognito = Cognito::new(cognito_validator.clone());
         // cors middleware
-        let cors = Cors::new()
-            .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
-            .finish();
+        let cors = Cors::default().allowed_methods(vec!["GET", "POST", "PUT", "DELETE"]);
 
         // set up the app
         App::new()
