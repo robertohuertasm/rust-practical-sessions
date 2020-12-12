@@ -89,7 +89,7 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "conten",
+						"key": "content-type",
 						"value": "application/json",
 						"type": "text"
 					}
@@ -124,7 +124,7 @@
 				"method": "PATCH",
 				"header": [
 					{
-						"key": "conten",
+						"key": "content-type",
 						"type": "text",
 						"value": "application/json"
 					}
