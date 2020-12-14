@@ -1,0 +1,19 @@
+[tasks.db-stop]
+script_runner = "@shell"
+script = '''
+docker stop rpts
+docker rm rpts
+'''
+
+[tasks.db-setup]
+script_runner = "@shell"
+script = '''
+docker run -d --name rpts -e POSTGRES_PASSWORD=MiPassword -e POSTGRES_USER=postgres -p 5432:5432 postgres
+'''
+
+[tasks.db-migrate]
+script_runner = "@shell"
+script = '''
+sqlx database create
+sqlx migrate run
+'''
