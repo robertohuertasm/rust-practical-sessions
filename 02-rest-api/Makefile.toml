@@ -17,7 +17,3 @@ script = '''
 sqlx database create
 sqlx migrate run
 '''
-
-[tasks.echo]
-command = "echo"
-args = ["hola"]
