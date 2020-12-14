@@ -9,9 +9,9 @@ edition = "2018"
 [dependencies]
 tonic = "0.3.1"
 prost = "0.6.1"
-tokio = { version = "0.3", features = ["macros"]}
+tokio = { version = "0.2.24", features = ["macros"]}
 
-sqlx = { version = "0.4.1", default-features = false, features = ["runtime-tokio-native-tls", "macros", "postgres", "uuid", "json", "chrono", "offline"] }
+sqlx = { version = "0.3", default-features = false, features = ["runtime-tokio", "macros", "postgres", "uuid", "json", "chrono"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 uuid = "0.8.1"
