@@ -1,16 +1,19 @@
-[tasks.db-setup]
+[tasks.db-stop]
 script_runner = "@shell"
 script = '''
 docker stop rpts
 docker rm rpts
-docker run -d --name rpts --net=host -e POSTGRES_PASSWORD=rustmola -p 5432:5432 postgres
-docker logs -f rpts
+'''
+
+[tasks.db-setup]
+script_runner = "@shell"
+script = '''
+docker run -d --name rpts -e POSTGRES_PASSWORD=MiPassword -e POSTGRES_USER=postgres -p 5432:5432 postgres
 '''
 
 [tasks.db-migrate]
 script_runner = "@shell"
 script = '''
-docker run --name rpts -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:latest
 sqlx database create
 sqlx migrate run
 '''
