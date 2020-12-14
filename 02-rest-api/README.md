@@ -42,6 +42,15 @@
 - Macros
 - Tests with Mockall
 
+## Database setup
+
+You'll need docker.
+
+```sh
+cargo make db-setup
+cargo make db-migrate
+```
+
 ## Postman configuration
 
 In the **assets** folder your find a [json file](/02-rest-api/assets/postman.json) that you can import into your Postman client.
