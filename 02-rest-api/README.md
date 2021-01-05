@@ -53,7 +53,7 @@ cargo make db-migrate
 
 ## Postman configuration
 
-In the **assets** folder your find a [json file](/02-rest-api/assets/postman.json) that you can import into your Postman client.
+In the **assets** folder you'll find a [json file](/02-rest-api/assets/postman.json) that you can import into your Postman client.
 
 ### Attributions
 
