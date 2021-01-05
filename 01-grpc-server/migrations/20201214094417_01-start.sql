@@ -12,3 +12,5 @@ CREATE TABLE users
 );
 
 CREATE UNIQUE INDEX users_name ON users (name);
+
+INSERT INTO public.users (id, name, birth_date, created_at, updated_at, custom_data) VALUES (DEFAULT, 'Roberto', '1977-03-10', DEFAULT, null, '{"points": 10}');
