@@ -1,0 +1,207 @@
+{
+  "db": "PostgreSQL",
+  "4e5a58ef7299da7b4da559634451a47e1d09db680354117967d8f6fe7013af67": {
+    "query": "\n            UPDATE users\n            SET custom_data = $1, updated_at = $2\n            WHERE id = $3\n            RETURNING id  as \"id?\", name, birth_date, custom_data as \"custom_data: Json<CustomData>\", created_at, updated_at\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id?",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "birth_date",
+          "type_info": "Date"
+        },
+        {
+          "ordinal": 3,
+          "name": "custom_data: Json<CustomData>",
+          "type_info": "Jsonb"
+        },
+        {
+          "ordinal": 4,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 5,
+          "name": "updated_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Jsonb",
+          "Timestamptz",
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "7d91ba38127bb94183f3002c8712b479236c672bc682f5ec52ddedcdd8ea5811": {
+    "query": "\n                SELECT id as \"id?\", name, birth_date, custom_data as \"custom_data: Json<CustomData>\", created_at, updated_at\n                FROM users\n                WHERE id = $1\n                ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id?",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "birth_date",
+          "type_info": "Date"
+        },
+        {
+          "ordinal": 3,
+          "name": "custom_data: Json<CustomData>",
+          "type_info": "Jsonb"
+        },
+        {
+          "ordinal": 4,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 5,
+          "name": "updated_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "7dc1259a0213fe86dfa6f10e0530e961f42949aad929583b76d310b371cdbf87": {
+    "query": "\n            DELETE FROM users\n            WHERE id = $1\n            RETURNING id  as \"id?\", name, birth_date, custom_data as \"custom_data: Json<CustomData>\", created_at, updated_at\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id?",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "birth_date",
+          "type_info": "Date"
+        },
+        {
+          "ordinal": 3,
+          "name": "custom_data: Json<CustomData>",
+          "type_info": "Jsonb"
+        },
+        {
+          "ordinal": 4,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 5,
+          "name": "updated_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Uuid"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "8d48f2590aec764a1420e5f009563b7f661855de4e7c8b610cf38d19e9dde572": {
+    "query": "\n            INSERT INTO users (name, birth_date, custom_data)\n            VALUES ($1, $2, $3)\n            RETURNING id as \"id?\", name, birth_date, custom_data as \"custom_data: Json<CustomData>\", created_at, updated_at\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id?",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "birth_date",
+          "type_info": "Date"
+        },
+        {
+          "ordinal": 3,
+          "name": "custom_data: Json<CustomData>",
+          "type_info": "Jsonb"
+        },
+        {
+          "ordinal": 4,
+          "name": "created_at",
+          "type_info": "Timestamptz"
+        },
+        {
+          "ordinal": 5,
+          "name": "updated_at",
+          "type_info": "Timestamptz"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Date",
+          "Jsonb"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    }
+  }
+}

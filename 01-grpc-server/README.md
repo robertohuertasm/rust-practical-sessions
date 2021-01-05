@@ -37,6 +37,15 @@
 - Async/Await
 - How to use the From trait
 
+## Database setup
+
+You'll need docker.
+
+```sh
+cargo make db-setup
+cargo make db-migrate
+```
+
 ## grpcurl scripts
 
 ```sh
