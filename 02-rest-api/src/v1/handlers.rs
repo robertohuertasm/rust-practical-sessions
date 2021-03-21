@@ -1,4 +1,4 @@
-use super::service::{ServiceError, ServiceInjector};
+use super::service::ServiceError;
 use crate::models::{CustomData, User};
 use actix_web::{error, web, HttpRequest, HttpResponse, Result};
 use actix_web_middleware_cognito::CognitoInfo;
@@ -11,11 +11,11 @@ pub mod users {
     pub const PATH: &str = "/users";
 
     #[instrument]
-    pub async fn get(
+    pub async fn get<S: crate::v1::service::Service>(
         id: web::Path<Uuid>,
         req: HttpRequest,
         auth: CognitoInfo,
-        svc: web::Data<ServiceInjector>,
+        svc: web::Data<S>,
     ) -> Result<HttpResponse> {
         svc_response!(
             svc.as_ref().get_user(&id, auth.user).await,
@@ -26,10 +26,10 @@ pub mod users {
     }
 
     #[instrument]
-    pub async fn post(
+    pub async fn post<S: crate::v1::service::Service>(
         user: web::Json<User>,
         req: HttpRequest,
-        svc: web::Data<ServiceInjector>,
+        svc: web::Data<S>,
     ) -> Result<HttpResponse> {
         match svc.as_ref().create_user(user.into_inner()).await {
             Ok(usr) => {
@@ -46,12 +46,12 @@ pub mod users {
     }
 
     #[instrument]
-    pub async fn patch(
+    pub async fn patch<S: crate::v1::service::Service>(
         id: web::Path<uuid::Uuid>,
         custom_data: web::Json<CustomData>,
         req: HttpRequest,
         auth: CognitoInfo,
-        svc: web::Data<ServiceInjector>,
+        svc: web::Data<S>,
     ) -> Result<HttpResponse> {
         svc_response!(
             svc.as_ref()
@@ -64,11 +64,11 @@ pub mod users {
     }
 
     #[instrument]
-    pub async fn delete(
+    pub async fn delete<S: crate::v1::service::Service>(
         id: web::Path<uuid::Uuid>,
         req: HttpRequest,
         auth: CognitoInfo,
-        svc: web::Data<ServiceInjector>,
+        svc: web::Data<S>,
     ) -> Result<HttpResponse> {
         svc_response!(
             svc.as_ref().delete_user(&id, auth.user).await,
@@ -160,7 +160,7 @@ pub mod users {
                     Ok(user)
                 });
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(user_id);
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::with_uri(path.as_ref()).to_http_request();
@@ -192,7 +192,7 @@ pub mod users {
                 .expect_sync_get_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();
@@ -211,7 +211,7 @@ pub mod users {
                 .expect_sync_get_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();
@@ -230,7 +230,7 @@ pub mod users {
                 .expect_sync_get_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();
@@ -258,7 +258,7 @@ pub mod users {
                 .expect_sync_create_user()
                 .returning(move |user| Ok(user));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let usr = web::Json(user);
             let req = test::TestRequest::with_uri("/v1/users").to_http_request();
             let mut res: HttpResponse = post(usr, req, svc).await.unwrap();
@@ -289,7 +289,7 @@ pub mod users {
                 .expect_sync_create_user()
                 .returning(move |_| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let usr = web::Json(User::default());
             let req = test::TestRequest::default().to_http_request();
             let res = post(usr, req, svc).await.err().unwrap();
@@ -307,7 +307,7 @@ pub mod users {
                 .expect_sync_create_user()
                 .returning(move |_| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let usr = web::Json(User::default());
             let req = test::TestRequest::default().to_http_request();
             let res = post(usr, req, svc).await.err().unwrap();
@@ -325,7 +325,7 @@ pub mod users {
                 .expect_sync_create_user()
                 .returning(move |_| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let usr = web::Json(User::default());
             let req = test::TestRequest::default().to_http_request();
             let res = post(usr, req, svc).await.err().unwrap();
@@ -355,7 +355,7 @@ pub mod users {
                     Ok(user)
                 });
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(user_id);
             let fields = web::Json(CustomData { random });
             let auth = CognitoInfo::disabled();
@@ -389,7 +389,7 @@ pub mod users {
                 .expect_sync_update_user()
                 .returning(move |_, _, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let custom_data = web::Json(CustomData::default());
             let auth = CognitoInfo::disabled();
@@ -409,7 +409,7 @@ pub mod users {
                 .expect_sync_update_user()
                 .returning(move |_, _, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let custom_data = web::Json(CustomData::default());
             let auth = CognitoInfo::disabled();
@@ -429,7 +429,7 @@ pub mod users {
                 .expect_sync_update_user()
                 .returning(move |_, _, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let custom_data = web::Json(CustomData::default());
             let auth = CognitoInfo::disabled();
@@ -459,7 +459,7 @@ pub mod users {
                     Ok(user)
                 });
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(user_id);
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::with_uri(path.as_ref()).to_http_request();
@@ -491,7 +491,7 @@ pub mod users {
                 .expect_sync_delete_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();
@@ -510,7 +510,7 @@ pub mod users {
                 .expect_sync_delete_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();
@@ -529,7 +529,7 @@ pub mod users {
                 .expect_sync_delete_user()
                 .returning(move |_, _| Err(err_svc()));
 
-            let svc = web::Data::new(ServiceInjector::new(mock_svc));
+            let svc = web::Data::new(mock_svc);
             let id = web::Path::from(Uuid::new_v4());
             let auth = CognitoInfo::disabled();
             let req = test::TestRequest::default().to_http_request();

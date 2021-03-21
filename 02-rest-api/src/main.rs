@@ -15,7 +15,7 @@ use middleware::Compress;
 use std::sync::Arc;
 use tracing as log;
 use v1::repository::PostgresRepository;
-use v1::service::{Rpts02Service, ServiceInjector};
+use v1::service::Rpts02Service;
 
 const PORT: &str = "3000";
 
@@ -46,7 +46,7 @@ async fn main() -> std::io::Result<()> {
         .expect("Error initializing Database connection pool");
     // creating the service layer
     let svc = Rpts02Service::new(repository);
-    let svc = ServiceInjector::new(svc);
+    // let svc = ServiceInjector::new(svc);
     let svc = web::Data::new(svc);
 
     // starting the server
@@ -67,7 +67,7 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/v1")
                     .wrap(cognito)
                     .app_data(svc.clone())
-                    .configure(v1::api),
+                    .configure(v1::api::<Rpts02Service<PostgresRepository>>),
             )
             .configure(health::endpoint)
     })

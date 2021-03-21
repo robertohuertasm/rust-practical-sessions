@@ -38,26 +38,6 @@ pub trait Service: Send + Sync + std::fmt::Debug {
     async fn delete_user(&self, user_id: &Uuid, caller_id: Option<String>) -> Result<User>;
 }
 
-/// Helper struct to locate the service from the handlers
-/// and avoid relying on a specific implementation of the Service trait.
-/// We're using dynamic dispatching but it will make tests easier.
-#[derive(Debug)]
-pub struct ServiceInjector(Box<dyn Service>);
-
-impl ServiceInjector {
-    /// Builds a new ServiceInjector
-    pub fn new(svc: impl Service + 'static) -> Self {
-        Self(Box::new(svc))
-    }
-}
-
-impl std::ops::Deref for ServiceInjector {
-    type Target = dyn Service;
-    fn deref(&self) -> &Self::Target {
-        self.0.as_ref()
-    }
-}
-
 /// Our custom Service implementing the Service trait.
 #[derive(Debug)]
 pub struct Rpts02Service<T: Repository> {

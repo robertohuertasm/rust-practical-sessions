@@ -6,20 +6,22 @@ use actix_web::web;
 use handlers::users;
 
 /// Configures the API
-pub fn api(cfg: &mut web::ServiceConfig) {
-    configure_users(cfg);
+pub fn api<S: service::Service + 'static>(cfg: &mut web::ServiceConfig) {
+    configure_users::<S>(cfg);
 }
 
 /// Configures the user endpoints
-fn configure_users(cfg: &mut web::ServiceConfig) {
-    let resource_path = format!("{}/{{id}}", users::PATH);
-    cfg
-        // GET
-        .route(&resource_path, web::get().to(users::get))
-        // POST
-        .route(users::PATH, web::post().to(users::post))
-        // PATCH
-        .route(&resource_path, web::patch().to(users::patch))
-        // DELETE
-        .route(&resource_path, web::delete().to(users::delete));
+fn configure_users<S: service::Service + 'static>(cfg: &mut web::ServiceConfig) {
+    let path_user_id = "/{id}";
+    cfg.service(
+        web::scope(users::PATH)
+            // GET
+            .route(path_user_id, web::get().to(users::get::<S>))
+            // POST
+            .route("/", web::post().to(users::post::<S>))
+            // PATCH
+            .route(&path_user_id, web::patch().to(users::patch::<S>))
+            // DELETE
+            .route(&path_user_id, web::delete().to(users::delete::<S>)),
+    );
 }
