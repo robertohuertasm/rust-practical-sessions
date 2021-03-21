@@ -47,7 +47,7 @@ async fn main() -> std::io::Result<()> {
     // creating the service layer
     let svc = Rpts02Service::new(repository);
     let svc = ServiceInjector::new(svc);
-    let svc = Arc::new(svc);
+    let svc = web::Data::new(svc);
 
     // starting the server
     HttpServer::new(move || {
@@ -66,7 +66,7 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::scope("/v1")
                     .wrap(cognito)
-                    .data(svc.clone())
+                    .app_data(svc.clone())
                     .configure(v1::api),
             )
             .configure(health::endpoint)
